@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import home from '../page/home/home'
-import login from '../page/login/login'
+import login from '../page/account/login'
+import register from '../page/account/register'
 
 Vue.use(Router)
 
@@ -10,8 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld,
+      redirect: '/home'
     },
     {
       path: '/home',
@@ -19,8 +19,16 @@ export default new Router({
       component: home,
       children: [
         {
+          path: '/home/helloWorld',
+          component: HelloWorld
+        },
+        {
           path: '/home/login',
           component: login
+        },
+        {
+          path: '/home/register',
+          component: register
         }
       ]
     }
