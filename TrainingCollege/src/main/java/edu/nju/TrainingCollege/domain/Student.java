@@ -5,14 +5,16 @@ public class Student {
     private String name;
     private String password;
     private int level;
-    private int expense;
+    private int deposit;
+    private int point;
 
-    public Student(String email, String name, String password, int level, int expense) {
+    public Student(String email, String name, String password, int level, int deposit, int point) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.level = level;
-        this.expense = expense;
+        this.deposit = deposit;
+        this.point = point;
     }
 
     public String getEmail() {
@@ -47,11 +49,19 @@ public class Student {
         this.level = level;
     }
 
-    public int getExpense() {
-        return expense;
+    public int getDeposit() {
+        return deposit;
     }
 
-    public void setExpense(int expense) {
-        this.expense = expense;
+    public void setDeposit(int deposit) {
+        this.deposit = deposit;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 }
