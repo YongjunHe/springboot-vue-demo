@@ -1,14 +1,14 @@
-package edu.nju.TrainingCollege.service;
+package edu.nju.TrainingCollege.service.impl;
 
 import edu.nju.TrainingCollege.dao.StudentMapper;
 import edu.nju.TrainingCollege.domain.Student;
-import org.apache.ibatis.session.SqlSession;
+import edu.nju.TrainingCollege.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class AccountService {
+@Service("StudentService")
+public class StudentServiceImpl implements StudentService {
     @Autowired
     StudentMapper studentMapper;
 
@@ -22,8 +22,8 @@ public class AccountService {
         return null;
     }
 
-    public int register(String email, String name, String password, int level) {
-        return studentMapper.insertStudent(email, name, password, level);
+    public int register(String email, String name, String password) {
+        return studentMapper.insertStudent(email, name, password);
     }
 
     public int modifyMembership(String email, int level) {
@@ -31,7 +31,7 @@ public class AccountService {
     }
 
     @Transactional
-    public int modifyInformation(String email, String name, String password) {
+    public int modifyAccount(String email, String name, String password) {
         Student student = studentMapper.getByEmail(email);
         if (student != null) {
             studentMapper.updateNameByEmail(name, email);
@@ -83,4 +83,26 @@ public class AccountService {
         }
         return 0;
     }
+
+    @Override
+    public int subscribe(String email, String courseid) {
+        return 0;
+    }
+
+    @Override
+    public int unsubscribe(String email, String courseid) {
+        return 0;
+    }
+
+    @Override
+    public int showOrders(String email) {
+        return 0;
+    }
+
+    @Override
+    public int showCourses(String email) {
+        return 0;
+    }
+
+
 }

@@ -5,9 +5,9 @@ public class Staff {
     private String name;
     private String password;
     private String title;
-    private int college;
+    private String college;
 
-    public Staff(String email, String name, String password, String title, int college) {
+    public Staff(String email, String name, String password, String title, String college) {
         this.email = email;
         this.name = name;
         this.password = password;
@@ -47,11 +47,11 @@ public class Staff {
         this.title = title;
     }
 
-    public int getCollege() {
+    public String getCollege() {
         return college;
     }
 
-    public void setCollege(int college) {
+    public void setCollege(String college) {
         this.college = college;
     }
 }

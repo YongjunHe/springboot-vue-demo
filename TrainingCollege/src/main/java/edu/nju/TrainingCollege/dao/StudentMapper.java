@@ -10,8 +10,8 @@ public interface StudentMapper {
     @Select("select * from student where email = #{email}")
     Student getByEmail(@Param("email") String email);
 
-    @Insert("insert into student (email, name, password, level, deposit, point) values(#{email}, #{name}, #{password}, #{level}, 0, 0)")
-    int insertStudent(@Param("email") String email, @Param("name") String name, @Param("password") String password, @Param("level") int level);
+    @Insert("insert into student (email, name, password, level, deposit, point) values(#{email}, #{name}, #{password}, 1, 0, 0)")
+    int insertStudent(@Param("email") String email, @Param("name") String name, @Param("password") String password);
 
     @Update("update student set name = #{name} where email = #{email}")
     int updateNameByEmail(@Param("name") String name, @Param("email") String email);
