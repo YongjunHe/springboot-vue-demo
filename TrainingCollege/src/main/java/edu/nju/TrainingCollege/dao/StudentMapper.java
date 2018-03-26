@@ -4,11 +4,22 @@ import edu.nju.TrainingCollege.domain.Student;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Mapper
 @Component(value = "StudentMapper")
 public interface StudentMapper {
     @Select("select * from student where email = #{email}")
-    Student getByEmail(@Param("email") String email);
+    Student selectByEmail(@Param("email") String email);
+
+    @Select("select student.* from student join classes on email = semail where orderid = #{orderid}")
+    List<Student> selectByOrder(@Param("orderid") String orderid);
+
+    @Select("select student.* from student join classes on email = semail where courseid = #{courseid}")
+    List<Student> selectByCourse(@Param("courseid") String courseid);
+
+    @Select("select * from student")
+    List<Student> selectAllStudents();
 
     @Insert("insert into student (email, name, password, level, deposit, point) values(#{email}, #{name}, #{password}, 1, 0, 0)")
     int insertStudent(@Param("email") String email, @Param("name") String name, @Param("password") String password);

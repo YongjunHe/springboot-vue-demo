@@ -1,27 +1,25 @@
 package edu.nju.TrainingCollege.domain;
 
+import java.util.List;
 import java.util.Map;
 
-public class Orders {
-    private String id;
+public class Order {
+    private int id;
     private String email;
-    private Map<String, String> students;
+    private int college;
     private String type;
     private int amount;
+    private List<Student> studentList;
 
-    public Orders(String id, String email, Map<String, String> students, String type, int amount) {
-        this.id = id;
-        this.email = email;
-        this.students = students;
-        this.type = type;
-        this.amount = amount;
+    public Order() {
+
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -33,12 +31,12 @@ public class Orders {
         this.email = email;
     }
 
-    public Map<String, String> getStudents() {
-        return students;
+    public int getCollege() {
+        return college;
     }
 
-    public void setStudents(Map<String, String> students) {
-        this.students = students;
+    public void setCollege(int college) {
+        this.college = college;
     }
 
     public String getType() {
@@ -55,5 +53,13 @@ public class Orders {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
     }
 }

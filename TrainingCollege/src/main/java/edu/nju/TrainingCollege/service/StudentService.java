@@ -1,6 +1,10 @@
 package edu.nju.TrainingCollege.service;
 
+import edu.nju.TrainingCollege.domain.Course;
+import edu.nju.TrainingCollege.domain.Order;
 import edu.nju.TrainingCollege.domain.Student;
+
+import java.util.List;
 
 public interface StudentService {
     public Student login(String email, String password);
@@ -19,11 +23,13 @@ public interface StudentService {
 
     public int spend(String email, int amount);
 
-    public int subscribe(String email, String courseid);
+    public int subscribe(String email, int courseid, int amount, List<String> semailList);
 
-    public int unsubscribe(String email, String courseid);
+    public int subscribe(String email, int collegeid, String type, int amount, List<String> semailList);
 
-    public int showOrders(String email);
+    public int unsubscribe(String orderid);
 
-    public int showCourses(String email);
+    public List<Order> showOrders(String email);
+
+    public List<Course> showCourses(String email);
 }

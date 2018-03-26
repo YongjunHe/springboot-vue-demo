@@ -1,23 +1,23 @@
 package edu.nju.TrainingCollege.domain;
 
 public class College {
-    private String id;
+    private int id;
     private String password;
     private String location;
     private int finance;
 
-    public College(String id, String password, String location, int finance) {
+    public College(int id, String password, String location, int finance) {
         this.id = id;
         this.password = password;
         this.location = location;
         this.finance = finance;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

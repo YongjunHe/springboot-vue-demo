@@ -1,41 +1,36 @@
 package edu.nju.TrainingCollege.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Course {
-    private String id;
-    private String college;
+    private int id;
+    private int college;
     private String type;
-    private String teacherEmail;
-    private Timestamp[] schedule;
+    private String temail;
     private int size;
     private int period;
     private int price;
+    private List<Schedule> scheduleList;
+    private List<Student> studentList;
 
-    public Course(String id, String college, String type, String teacherEmail, Timestamp[] schedule, int size, int period, int price) {
-        this.id = id;
-        this.college = college;
-        this.type = type;
-        this.teacherEmail = teacherEmail;
-        this.schedule = schedule;
-        this.size = size;
-        this.period = period;
-        this.price = price;
+    public Course() {
+
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getCollege() {
+    public int getCollege() {
         return college;
     }
 
-    public void setCollege(String college) {
+    public void setCollege(int college) {
         this.college = college;
     }
 
@@ -47,20 +42,12 @@ public class Course {
         this.type = type;
     }
 
-    public String getTeacherEmail() {
-        return teacherEmail;
+    public String getTemail() {
+        return temail;
     }
 
-    public void setTeacherEmail(String teacherEmail) {
-        this.teacherEmail = teacherEmail;
-    }
-
-    public Timestamp[] getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Timestamp[] schedule) {
-        this.schedule = schedule;
+    public void setTemail(String temail) {
+        this.temail = temail;
     }
 
     public int getSize() {
@@ -85,5 +72,21 @@ public class Course {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<Schedule> getScheduleList() {
+        return scheduleList;
+    }
+
+    public void setScheduleList(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
+    }
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
     }
 }

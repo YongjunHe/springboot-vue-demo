@@ -11,9 +11,9 @@ public interface CollegeService {
 
     public int modifyAccount(String id, String password, String location);
 
-    public int setupCourse(String id, String courseid, String type, String teacherEmail, Timestamp[] schdule, int size, int period, int price);
+    public int setupCourse(String courseid, String id, String type, String teacherEmail, Timestamp[] schdule, int size, int period, int price);
 
-    public int modifyCourse(String id, String courseid, String type, String teacherEmail, Timestamp[] schdule, int size, int period, int price);
+    public int modifyCourse(String courseid, String id, String type, String teacherEmail, Timestamp[] schdule, int size, int period, int price);
 
     public int showStudents(String id);
 

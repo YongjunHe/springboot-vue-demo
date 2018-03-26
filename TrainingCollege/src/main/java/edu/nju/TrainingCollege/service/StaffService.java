@@ -1,7 +1,9 @@
 package edu.nju.TrainingCollege.service;
 
 import edu.nju.TrainingCollege.domain.Staff;
+import edu.nju.TrainingCollege.domain.Student;
 
+import java.util.List;
 import java.util.Map;
 
 public interface StaffService {
@@ -17,7 +19,7 @@ public interface StaffService {
 
     public int releaseScores(String courseid, Map<String, Integer> transcript);
 
-    public int showAllStudents();
+    public List<Student> showAllStudents();
 
     public int showAllOrders();
 
