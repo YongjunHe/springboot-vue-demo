@@ -24,8 +24,13 @@ public class HelloWorldController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public int Hello(HttpServletRequest request) {
-        List<String> semailList = new ArrayList<String>();
-        semailList.add("141250003@qq.com");
-        return studentService.subscribe("141250001@qq.com", 100000, "math", 1000, semailList);
+        return studentService.register("1169357116@qq.com", "yongjun", "123456");
+    }
+
+    @RequestMapping(value = "/activate", method = RequestMethod.GET)
+    public int Activate(HttpServletRequest request) {
+        String code = request.getParameter("code");
+        String email = request.getParameter("email");
+        return studentService.activate(email, code);
     }
 }

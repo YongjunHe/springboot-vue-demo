@@ -1,9 +1,6 @@
 package edu.nju.TrainingCollege.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 @Mapper
@@ -14,4 +11,7 @@ public interface ClassesMapper {
 
     @Insert("insert into classes (orderid, courseid, semail) values(#{orderid}, #{courseid}, #{semail})")
     int insertClass(@Param("orderid") int orderid, @Param("courseid") int courseid, @Param("semail") String semail);
+
+    @Delete("delete from classes where orderid = #{orderid}")
+    int deleteByOrder(@Param("orderid") int orderid);
 }

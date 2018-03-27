@@ -21,7 +21,7 @@ public interface StudentMapper {
     @Select("select * from student")
     List<Student> selectAllStudents();
 
-    @Insert("insert into student (email, name, password, level, deposit, point) values(#{email}, #{name}, #{password}, 1, 0, 0)")
+    @Insert("insert into student (email, name, password, level, deposit, point) values(#{email}, #{name}, #{password}, 0, 0, 0)")
     int insertStudent(@Param("email") String email, @Param("name") String name, @Param("password") String password);
 
     @Update("update student set name = #{name} where email = #{email}")

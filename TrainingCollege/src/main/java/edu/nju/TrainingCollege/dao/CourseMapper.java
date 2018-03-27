@@ -30,7 +30,7 @@ public interface CourseMapper {
     Course selectById(@Param("id") int id);
 
     @Select("select course.*, count(*) as tempsize from course join classes on id = courseid where college = #{college} and type = #{type} group by courseid")
-    List<Map> selectAvailableCourse(@Param("college") int college, @Param("type") String type);
+    List<Map> selectSuitableCourse(@Param("college") int college, @Param("type") String type);
 
     @Select("select course.* from course")
     @Results({

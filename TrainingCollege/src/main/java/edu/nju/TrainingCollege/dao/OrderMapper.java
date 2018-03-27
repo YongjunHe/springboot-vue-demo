@@ -33,9 +33,12 @@ public interface OrderMapper {
     })
     List<Order> selectAllStudents();
 
-    @Select("select max(id) from orders")
-    int selectMaxId();
+    @Select("select distinct last_insert_id() from orders")
+    int selectLastId();
 
     @Insert("insert into orders (email, college, type, amount) values(#{email}, #{college}, #{type}, #{amount})")
     int insertOrder(@Param("email") String email, @Param("college") int college, @Param("type") String type, @Param("amount") int amount);
+
+    @Delete("delete from orders where id = #{id}")
+    int deleteOrder(@Param("id") int id);
 }

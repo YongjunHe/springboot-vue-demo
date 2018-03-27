@@ -11,6 +11,8 @@ public interface StudentService {
 
     public int register(String email, String name, String password);
 
+    public int activate(String email, String code);
+
     public int modifyAccount(String email, String name, String password);
 
     public int modifyMembership(String email, int level);
@@ -27,7 +29,7 @@ public interface StudentService {
 
     public int subscribe(String email, int collegeid, String type, int amount, List<String> semailList);
 
-    public int unsubscribe(String orderid);
+    public int unsubscribe(int orderid);
 
     public List<Order> showOrders(String email);
 
