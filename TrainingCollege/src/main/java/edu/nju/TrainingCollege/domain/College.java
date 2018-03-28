@@ -5,12 +5,23 @@ public class College {
     private String password;
     private String location;
     private int finance;
+    private int level;
 
-    public College(int id, String password, String location, int finance) {
+    public College() {
+
+    }
+
+    public College(String password, String location) {
+        this.password = password;
+        this.location = location;
+    }
+
+    public College(int id, String password, String location, int finance, int level) {
         this.id = id;
         this.password = password;
         this.location = location;
         this.finance = finance;
+        this.level = level;
     }
 
     public int getId() {
@@ -43,5 +54,13 @@ public class College {
 
     public void setFinance(int finance) {
         this.finance = finance;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

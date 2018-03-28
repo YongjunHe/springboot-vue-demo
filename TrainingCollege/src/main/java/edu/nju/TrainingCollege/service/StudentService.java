@@ -1,5 +1,6 @@
 package edu.nju.TrainingCollege.service;
 
+import edu.nju.TrainingCollege.domain.Classes;
 import edu.nju.TrainingCollege.domain.Course;
 import edu.nju.TrainingCollege.domain.Order;
 import edu.nju.TrainingCollege.domain.Student;
@@ -19,11 +20,9 @@ public interface StudentService {
 
     public int exchangeCredits(String email, int credit);
 
-    public int getDiscount(String email);
+    public int save(String email, String password, int amount);
 
-    public int save(String email, int amount);
-
-    public int spend(String email, int amount);
+    public int spend(String email, String password, int amount);
 
     public int subscribe(String email, int courseid, int amount, List<String> semailList);
 
@@ -31,7 +30,11 @@ public interface StudentService {
 
     public int unsubscribe(int orderid);
 
+    public Student showProfile(String email);
+
     public List<Order> showOrders(String email);
 
     public List<Course> showCourses(String email);
+
+    public List<Classes> showScores(String email);
 }

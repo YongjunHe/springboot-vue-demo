@@ -1,12 +1,8 @@
 package edu.nju.TrainingCollege.service.impl;
 
-import com.sun.net.httpserver.Authenticator;
 import edu.nju.TrainingCollege.dao.*;
-import edu.nju.TrainingCollege.domain.Verification;
+import edu.nju.TrainingCollege.domain.*;
 import edu.nju.TrainingCollege.exception.CustomException;
-import edu.nju.TrainingCollege.domain.Course;
-import edu.nju.TrainingCollege.domain.Order;
-import edu.nju.TrainingCollege.domain.Student;
 import edu.nju.TrainingCollege.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,27 +15,26 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Service("StudentService")
 public class StudentServiceImpl implements StudentService {
     @Autowired
-    StudentMapper studentMapper;
+    private StudentMapper studentMapper;
 
     @Autowired
-    OrderMapper orderMapper;
+    private OrderMapper orderMapper;
 
     @Autowired
-    CourseMapper courseMapper;
+    private CourseMapper courseMapper;
 
     @Autowired
-    ClassesMapper classesMapper;
+    private ClassesMapper classesMapper;
 
     @Autowired
-    VerificationMapper verificationMapper;
+    private VerificationMapper verificationMapper;
 
     @Autowired
-    JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     public Student login(String email, String password) {
         Student student = studentMapper.selectByEmail(email);
@@ -86,13 +81,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional
     public int modifyAccount(String email, String name, String password) {
-        Student student = studentMapper.selectByEmail(email);
-        if (student != null) {
-            studentMapper.updateNameByEmail(name, email);
-            studentMapper.updatePasswordByEmail(password, email);
-            return 1;
-        }
-        return 0;
+        return studentMapper.updateNameByEmail(name, email) * studentMapper.updatePasswordByEmail(password, email);
     }
 
     @Transactional
@@ -100,31 +89,24 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentMapper.selectByEmail(email);
         if (student != null)
             if (student.getPoint() > credit) {
-                studentMapper.updateDepositByEmail(student.getDeposit() + credit, email);
-                studentMapper.updatePointByEmail(student.getPoint() - credit, email);
-                return 1;
+                return studentMapper.updateDepositByEmail(student.getDeposit() + credit, email) *
+                        studentMapper.updatePointByEmail(student.getPoint() - credit, email);
             }
         return 0;
     }
 
-    public int getDiscount(String email) {
+    public int save(String email, String password, int amount) {
         Student student = studentMapper.selectByEmail(email);
         if (student != null)
-            return student.getLevel();
+            if (student.getPassword().equals(password))
+                return studentMapper.updateDepositByEmail(student.getDeposit() + amount, email);
         return 0;
     }
 
-    public int save(String email, int amount) {
+    public int spend(String email, String password, int amount) {
         Student student = studentMapper.selectByEmail(email);
         if (student != null)
-            return studentMapper.updateDepositByEmail(student.getDeposit() + amount, email);
-        return 0;
-    }
-
-    public int spend(String email, int amount) {
-        Student student = studentMapper.selectByEmail(email);
-        if (student != null)
-            if (student.getDeposit() > amount)
+            if (student.getDeposit() > amount && student.getPassword().equals(password))
                 return studentMapper.updateDepositByEmail(student.getDeposit() + amount, email);
         return 0;
     }
@@ -133,12 +115,12 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public int subscribe(String email, int courseid, int amount, List<String> semailList) {
         Course course = courseMapper.selectById(courseid);
-        orderMapper.insertOrder(email, course.getCollege(), course.getType(), amount);
-        int orderid = orderMapper.selectLastId();
+        Order order = new Order(email, course.getCollege(), course.getType(), amount);
+        orderMapper.insertOrder(order);
         for (String semail : semailList) {
-            classesMapper.insertClass(orderid, courseid, semail);
+            classesMapper.insertClass(order.getId(), courseid, semail);
         }
-        if ((course.getSize() - classesMapper.selectByCourseid(courseid)) < semailList.size())
+        if ((course.getSize() - classesMapper.countByCourseid(courseid)) < semailList.size())
             throw new CustomException("No position now !");
         return 1;
     }
@@ -160,13 +142,13 @@ public class StudentServiceImpl implements StudentService {
         if (total < semailList.size())
             return 0;
 
-        orderMapper.insertOrder(email, collegeid, type, amount);
-        int orderid = orderMapper.selectLastId();
+        Order order = new Order(email, collegeid, type, amount);
+        orderMapper.insertOrder(order);
         for (String semail : semailList) {
             for (Map map : courseList) {
                 if ((int) map.get("size") > Integer.parseInt(map.get("tempsize").toString())) {
                     map.put("tempsize", (Long) map.get("tempsize") + 1);
-                    classesMapper.insertClass(orderid, (int) map.get("id"), semail);
+                    classesMapper.insertClass(order.getId(), (int) map.get("id"), semail);
                     break;
                 } else {
                     courseList.remove(map);
@@ -185,9 +167,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public int unsubscribe(int orderid) {
-        orderMapper.deleteOrder(orderid);
-        classesMapper.deleteByOrder(orderid);
-        return 0;
+        return classesMapper.deleteByOrder(orderid) * orderMapper.deleteOrder(orderid);
+    }
+
+    public Student showProfile(String email) {
+        return studentMapper.selectByEmail(email);
     }
 
     @Override
@@ -198,5 +182,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Course> showCourses(String email) {
         return courseMapper.selectBySemail(email);
+    }
+
+    @Override
+    public List<Classes> showScores(String email) {
+        return classesMapper.selectByEmail(email);
     }
 }

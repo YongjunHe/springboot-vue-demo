@@ -10,6 +10,22 @@ import java.util.Map;
 @Mapper
 @Component(value = "CourseMapper")
 public interface CourseMapper {
+    @Select("select * from course where id = #{id}")
+    @Results({
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "college", column = "college"),
+            @Result(property = "type", column = "type"),
+            @Result(property = "temail", column = "temail"),
+            @Result(property = "size", column = "size"),
+            @Result(property = "period", column = "period"),
+            @Result(property = "prize", column = "prize"),
+            @Result(property = "scheduleList", column = "id", javaType = List.class,
+                    many = @Many(select = "edu.nju.TrainingCollege.dao.ScheduleMapper.selectByCourse")),
+            @Result(property = "studentList", column = "id", javaType = List.class,
+                    many = @Many(select = "edu.nju.TrainingCollege.dao.StudentMapper.selectByCourse"))
+    })
+    Course selectById(@Param("id") int id);
+
     @Select("select course.* from course join classes on id = courseid where semail = #{semail}")
     @Results({
             @Result(property = "id", column = "id", id = true),
@@ -24,15 +40,28 @@ public interface CourseMapper {
             @Result(property = "studentList", column = "id", javaType = List.class,
                     many = @Many(select = "edu.nju.TrainingCollege.dao.StudentMapper.selectByCourse"))
     })
-    List<Course> selectBySemail(String semail);
+    List<Course> selectBySemail(@Param("semail") String semail);
 
-    @Select("select * from course where id = #{id}")
-    Course selectById(@Param("id") int id);
+    @Select("select * from course where college = #{college}")
+    @Results({
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "college", column = "college"),
+            @Result(property = "type", column = "type"),
+            @Result(property = "temail", column = "temail"),
+            @Result(property = "size", column = "size"),
+            @Result(property = "period", column = "period"),
+            @Result(property = "prize", column = "prize"),
+            @Result(property = "scheduleList", column = "id", javaType = List.class,
+                    many = @Many(select = "edu.nju.TrainingCollege.dao.ScheduleMapper.selectByCourse")),
+            @Result(property = "studentList", column = "id", javaType = List.class,
+                    many = @Many(select = "edu.nju.TrainingCollege.dao.StudentMapper.selectByCourse"))
+    })
+    List<Course> selectByCollege(@Param("college") int college);
 
     @Select("select course.*, count(*) as tempsize from course join classes on id = courseid where college = #{college} and type = #{type} group by courseid")
     List<Map> selectSuitableCourse(@Param("college") int college, @Param("type") String type);
 
-    @Select("select course.* from course")
+    @Select("select * from course")
     @Results({
             @Result(property = "id", column = "id", id = true),
             @Result(property = "college", column = "college"),
@@ -47,4 +76,11 @@ public interface CourseMapper {
                     many = @Many(select = "edu.nju.TrainingCollege.dao.StudentMapper.selectByCourse"))
     })
     List<Course> selectAllCourses();
+
+    @Insert("insert into course (college, type, temail, size, period, price) values(#{college}, #{type}, #{temail}, #{size}, #{period}, #{price})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int insertCourse(Course course);
+
+    @Update("update course set college = #{college}, type = #{type}, temail = #{temail}, size = #{size}, period = #{period}, price = #{price} where id = #{id}")
+    int updateCourse(@Param("id") int id, @Param("college") int college, @Param("type") String type, @Param("temail") String temail, @Param("size") int size, @Param("period") int period, @Param("price") int price);
 }

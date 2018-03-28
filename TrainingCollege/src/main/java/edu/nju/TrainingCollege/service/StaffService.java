@@ -1,7 +1,6 @@
 package edu.nju.TrainingCollege.service;
 
-import edu.nju.TrainingCollege.domain.Staff;
-import edu.nju.TrainingCollege.domain.Student;
+import edu.nju.TrainingCollege.domain.*;
 
 import java.util.List;
 import java.util.Map;
@@ -9,19 +8,25 @@ import java.util.Map;
 public interface StaffService {
     public Staff login(String email, String password);
 
-    public int register(String email, String name, String password, String title, String college);
+    public int register(String email, String name, String password, String title, int college);
 
-    public int modifyAccount(String email, String name, String password, String title, String college);
+    public int modifyAccount(String email, String name, String password, String title, int college);
 
-    public int settleAccount(String collegeid, String orderid);
+    public int settleAccount(int college, String orderid);
 
-    public int approveCollege(String collegeid, boolean decision);
+    public int approveCollege(int college, boolean decision);
 
-    public int releaseScores(String courseid, Map<String, Integer> transcript);
+    public int releaseScores(int courseid, List<Classes> transcript);
+
+    public Staff showProfile(String email);
+
+    public List<Staff> showAllStaffs();
+
+    public List<Order> showAllOrders();
+
+    public List<Course> showAllCourses();
+
+    public List<College> showAllColleges();
 
     public List<Student> showAllStudents();
-
-    public int showAllOrders();
-
-    public int showAllCourses();
 }

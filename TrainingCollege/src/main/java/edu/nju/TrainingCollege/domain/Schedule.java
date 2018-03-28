@@ -7,6 +7,11 @@ public class Schedule {
     private Timestamp starttime;
     private Timestamp endtime;
 
+    public Schedule(Timestamp starttime, Timestamp endtime) {
+        this.starttime = starttime;
+        this.endtime = endtime;
+    }
+
     public Schedule(int courseid, Timestamp starttime, Timestamp endtime) {
         this.courseid = courseid;
         this.starttime = starttime;

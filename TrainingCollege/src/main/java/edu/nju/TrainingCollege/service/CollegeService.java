@@ -1,23 +1,27 @@
 package edu.nju.TrainingCollege.service;
 
-import edu.nju.TrainingCollege.domain.College;
+import edu.nju.TrainingCollege.domain.*;
 
-import java.sql.Timestamp;
+import java.util.List;
 
 public interface CollegeService {
-    public College login(String id, String password);
+    public College login(int id, String password);
 
-    public int register(String id, String password, String location);
+    public int register(String password, String location);
 
-    public int modifyAccount(String id, String password, String location);
+    public int modifyAccount(int id, String password, String location);
 
-    public int setupCourse(String courseid, String id, String type, String teacherEmail, Timestamp[] schdule, int size, int period, int price);
+    public int setupCourse(int id, String type, String teacherEmail, int size, int period, int price, List<Schedule> schduleList);
 
-    public int modifyCourse(String courseid, String id, String type, String teacherEmail, Timestamp[] schdule, int size, int period, int price);
+    public int modifyCourse(int courseid, int id, String type, String teacherEmail, int size, int period, int price, List<Schedule> schduleList);
 
-    public int showStudents(String id);
+    public College showProfile(int id);
 
-    public int showOrders(String id);
+    public List<Staff> showStaffs(int id);
 
-    public int showCourses(String id);
+    public List<Student> showStudents(int id);
+
+    public List<Order> showOrders(int id);
+
+    public List<Course> showCourses(int id);
 }

@@ -13,10 +13,13 @@ public interface StudentMapper {
     Student selectByEmail(@Param("email") String email);
 
     @Select("select student.* from student join classes on email = semail where orderid = #{orderid}")
-    List<Student> selectByOrder(@Param("orderid") String orderid);
+    List<Student> selectByOrder(@Param("orderid") int orderid);
 
     @Select("select student.* from student join classes on email = semail where courseid = #{courseid}")
-    List<Student> selectByCourse(@Param("courseid") String courseid);
+    List<Student> selectByCourse(@Param("courseid") int courseid);
+
+    @Select("select s.* from student s join classes c1 on s.email = c1.semail join course c2 on c1.courseid = c2.id where c2.college = #{college}")
+    List<Student> selectByCollege(@Param("college") int college);
 
     @Select("select * from student")
     List<Student> selectAllStudents();

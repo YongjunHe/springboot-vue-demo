@@ -15,6 +15,13 @@ public class Order {
 
     }
 
+    public Order(String email, int college, String type, int amount) {
+        this.email = email;
+        this.college = college;
+        this.type = type;
+        this.amount = amount;
+    }
+
     public int getId() {
         return id;
     }

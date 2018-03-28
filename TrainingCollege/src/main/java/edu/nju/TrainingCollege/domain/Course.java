@@ -18,6 +18,16 @@ public class Course {
 
     }
 
+    public Course(int college, String type, String temail, int size, int period, int price, List<Schedule> scheduleList) {
+        this.college = college;
+        this.type = type;
+        this.temail = temail;
+        this.size = size;
+        this.period = period;
+        this.price = price;
+        this.scheduleList = scheduleList;
+    }
+
     public int getId() {
         return id;
     }
