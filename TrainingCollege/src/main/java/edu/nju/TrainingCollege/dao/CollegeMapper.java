@@ -26,7 +26,7 @@ public interface CollegeMapper {
     int updateLocationById(@Param("id") int id, @Param("location") String location);
 
     @Update("update college set finance = #{finance} where id = #{id}")
-    int updateFinanceById(@Param("id") int id, @Param("finance") String finance);
+    int updateFinanceById(@Param("id") int id, @Param("finance") int finance);
 
     @Update("update college set level = #{level} where id = #{id}")
     int updateLevelById(@Param("id") int id, @Param("level") int level);

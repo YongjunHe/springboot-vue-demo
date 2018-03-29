@@ -12,7 +12,7 @@ public interface StaffService {
 
     public int modifyAccount(String email, String name, String password, String title, int college);
 
-    public int settleAccount(int college, String orderid);
+    public int settleAccount(int college);
 
     public int approveCollege(int college, boolean decision);
 

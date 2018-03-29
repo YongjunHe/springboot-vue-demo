@@ -18,6 +18,9 @@ public interface ClassesMapper {
     @Insert("insert into classes (orderid, courseid, semail, score) values(#{orderid}, #{courseid}, #{semail}, 0)")
     int insertClass(@Param("orderid") int orderid, @Param("courseid") int courseid, @Param("semail") String semail);
 
+    @Update("UPDATE classes SET score = #{score} where courseid = #{courseid} and semail = #{semail}")
+    int updateScore(@Param("score") int score, @Param("courseid") int courseid, @Param("semail") String semail);
+
     @Delete("delete from classes where orderid = #{orderid}")
     int deleteByOrder(@Param("orderid") int orderid);
 }

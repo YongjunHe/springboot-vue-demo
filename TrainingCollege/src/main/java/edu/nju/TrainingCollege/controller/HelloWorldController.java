@@ -78,4 +78,9 @@ public class HelloWorldController {
         scheduleList.add(schedule);
         return collegeService.modifyCourse(10014, 1000000, "english", "141260001@qq.com", 50, 8, 1000, scheduleList);
     }
+
+    @RequestMapping(value = "/pay", method = RequestMethod.GET)
+    public int pay(HttpServletRequest request) {
+        return studentService.pay("141250001@qq.com", "123456", 100000);
+    }
 }

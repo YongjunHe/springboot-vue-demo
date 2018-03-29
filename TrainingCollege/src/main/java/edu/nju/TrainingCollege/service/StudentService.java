@@ -28,7 +28,9 @@ public interface StudentService {
 
     public int subscribe(String email, int collegeid, String type, int amount, List<String> semailList);
 
-    public int unsubscribe(int orderid);
+    public int unsubscribe(String email, String password, int orderid);
+
+    public int pay(String email, String password, int orderid);
 
     public Student showProfile(String email);
 

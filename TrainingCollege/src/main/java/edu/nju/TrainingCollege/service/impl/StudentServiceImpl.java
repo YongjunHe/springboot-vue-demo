@@ -19,13 +19,16 @@ import java.util.UUID;
 @Service("StudentService")
 public class StudentServiceImpl implements StudentService {
     @Autowired
-    private StudentMapper studentMapper;
-
-    @Autowired
     private OrderMapper orderMapper;
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private StudentMapper studentMapper;
+
+    @Autowired
+    private CollegeMapper collegeMapper;
 
     @Autowired
     private ClassesMapper classesMapper;
@@ -107,7 +110,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentMapper.selectByEmail(email);
         if (student != null)
             if (student.getDeposit() > amount && student.getPassword().equals(password))
-                return studentMapper.updateDepositByEmail(student.getDeposit() + amount, email);
+                return studentMapper.updateDepositByEmail(student.getDeposit() - amount, email);
         return 0;
     }
 
@@ -115,7 +118,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public int subscribe(String email, int courseid, int amount, List<String> semailList) {
         Course course = courseMapper.selectById(courseid);
-        Order order = new Order(email, course.getCollege(), course.getType(), amount);
+        Order order = new Order(email, course.getCollege(), course.getType(), amount, 0);
         orderMapper.insertOrder(order);
         for (String semail : semailList) {
             classesMapper.insertClass(order.getId(), courseid, semail);
@@ -142,7 +145,7 @@ public class StudentServiceImpl implements StudentService {
         if (total < semailList.size())
             return 0;
 
-        Order order = new Order(email, collegeid, type, amount);
+        Order order = new Order(email, collegeid, type, amount, 0);
         orderMapper.insertOrder(order);
         for (String semail : semailList) {
             for (Map map : courseList) {
@@ -166,8 +169,29 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional
-    public int unsubscribe(int orderid) {
-        return classesMapper.deleteByOrder(orderid) * orderMapper.deleteOrder(orderid);
+    public int unsubscribe(String email, String password, int orderid) {
+        Order order = orderMapper.selectById(orderid);
+        if (order != null) {
+            College college = collegeMapper.selectById(order.getCollege());
+            if (college != null) {
+                if (classesMapper.deleteByOrder(orderid) * orderMapper.deleteOrderById(orderid) * save(email, password, order.getAmount()) == 0)
+                    throw new CustomException("Failed to unsubscribe");
+                if (collegeMapper.updateFinanceById(college.getId(), college.getFinance() - order.getAmount()) == 0)
+                    throw new CustomException("Failed to unsubscribe");
+            }
+        }
+        return 1;
+    }
+
+    @Override
+    @Transactional
+    public int pay(String email, String password, int orderid) {
+        Order order = orderMapper.selectById(orderid);
+        if (order != null)
+            if (orderMapper.updatePaytimeById(orderid) * orderMapper.updateStatusById(1, orderid) * spend(email, password, order.getAmount()) == 0)
+                throw new CustomException("Failed to pay");
+        orderMapper.deleteOrderByTime();
+        return 1;
     }
 
     public Student showProfile(String email) {
