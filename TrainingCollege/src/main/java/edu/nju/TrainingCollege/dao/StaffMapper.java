@@ -18,7 +18,7 @@ public interface StaffMapper {
     @Select("select * from staff")
     List<Staff> selectAllStaffs();
 
-    @Insert("insert into student (email, name, password, title, college) values(#{email}, #{name}, #{password}, #{title}, #{college})")
+    @Insert("insert into staff (email, name, password, title, college) values(#{email}, #{name}, #{password}, #{title}, #{college})")
     int insertStaff(@Param("email") String email, @Param("name") String name, @Param("password") String password, @Param("title") String title, @Param("college") int college);
 
     @Update("update staff set name = #{name}, password = #{password}, title = #{title}, college = #{college} where email = #{email}")

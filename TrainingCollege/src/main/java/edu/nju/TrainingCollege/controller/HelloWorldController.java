@@ -41,11 +41,6 @@ public class HelloWorldController {
         return studentService.activate(email, code);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public int Register(HttpServletRequest request) {
-        return collegeService.register("123456", "Shanghai");
-    }
-
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
     public int Subscribe(HttpServletRequest request) {
         List<String> seamilList = new ArrayList<String>();

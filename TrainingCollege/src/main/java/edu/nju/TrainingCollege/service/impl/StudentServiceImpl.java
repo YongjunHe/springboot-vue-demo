@@ -53,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
     public int register(String email, String name, String password) {
         studentMapper.insertStudent(email, name, password);
         String uuid = UUID.randomUUID().toString();
-        String content = "<html><body>\n" + "<a href=\"http://127.0.0.1:8080/activate?email=" + email + "&code=" + uuid + "\">激活账号</a>\n" + "</body></html>";
+        String content = "<html><body>\n" + "<a href=\"http://127.0.0.1:8080/student/activate?email=" + email + "&code=" + uuid + "\">激活账号</a>\n" + "</body></html>";
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
         try {
