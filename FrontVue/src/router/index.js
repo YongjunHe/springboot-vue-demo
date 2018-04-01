@@ -4,8 +4,9 @@ import HelloWorld from '@/components/HelloWorld'
 import home from '../page/home/home'
 import login from '../page/account/login'
 import register from '../page/account/register'
+import homepage from '../page/account/homepage'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -29,6 +30,10 @@ export default new Router({
         {
           path: '/home/register',
           component: register
+        },
+        {
+          path: '/home/homepage',
+          component: homepage
         }
       ]
     }

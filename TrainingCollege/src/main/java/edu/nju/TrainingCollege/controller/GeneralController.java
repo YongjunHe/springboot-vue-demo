@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class HelloWorldController {
+public class GeneralController {
     @Autowired
     StudentService studentService;
 
@@ -28,18 +28,6 @@ public class HelloWorldController {
 
     @Autowired
     CollegeService collegeService;
-
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public int Hello(HttpServletRequest request) {
-        return studentService.register("1169357116@qq.com", "yongjun", "123456");
-    }
-
-    @RequestMapping(value = "/activate", method = RequestMethod.GET)
-    public int Activate(HttpServletRequest request) {
-        String code = request.getParameter("code");
-        String email = request.getParameter("email");
-        return studentService.activate(email, code);
-    }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
     public int Subscribe(HttpServletRequest request) {

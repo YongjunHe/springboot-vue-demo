@@ -3,6 +3,7 @@ package edu.nju.TrainingCollege.controller;
 import edu.nju.TrainingCollege.domain.Student;
 import edu.nju.TrainingCollege.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,28 +18,30 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    @CrossOrigin
     @RequestMapping(value = "/student/login", method = RequestMethod.GET)
-    public Student Login(HttpServletRequest request) {
+    public Student login(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         HttpSession httpSession = request.getSession();
         Student student = studentService.login(email, password);
         if (student != null) {
-            httpSession.setAttribute("userid", email);
-            httpSession.setAttribute("usertype", "student");
+            httpSession.setAttribute("userId", email);
+            httpSession.setAttribute("userType", "student");
         }
         return student;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/student/logout", method = RequestMethod.GET)
-    public void Logout(HttpServletRequest request) {
+    public void logout(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
-        httpSession.removeAttribute("userid");
-        httpSession.removeAttribute("usertype");
+        httpSession.removeAttribute("userId");
+        httpSession.removeAttribute("userType");
     }
 
     @RequestMapping(value = "/student/register", method = RequestMethod.GET)
-    public int Register(HttpServletRequest request) {
+    public int register(HttpServletRequest request) {
         String email = request.getParameter("email");
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -46,7 +49,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/student/activate", method = RequestMethod.GET)
-    public void Activate(HttpServletRequest request, HttpServletResponse response) {
+    public void activate(HttpServletRequest request, HttpServletResponse response) {
         try {
             String code = request.getParameter("code");
             String email = request.getParameter("email");
@@ -58,5 +61,19 @@ public class StudentController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/student/profile", method = RequestMethod.GET)
+    public Student profile(HttpServletRequest request) {
+        String userId = request.getParameter("userId");
+        return studentService.showProfile(userId);
+    }
+
+    @RequestMapping(value = "/student/modifyAccount", method = RequestMethod.GET)
+    public int modifyAccount(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        return studentService.modifyAccount(email, name, password);
     }
 }
