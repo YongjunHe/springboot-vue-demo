@@ -1,5 +1,7 @@
 package edu.nju.TrainingCollege.controller;
 
+import edu.nju.TrainingCollege.domain.Course;
+import edu.nju.TrainingCollege.domain.Order;
 import edu.nju.TrainingCollege.domain.Student;
 import edu.nju.TrainingCollege.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class StudentController {
@@ -54,9 +57,9 @@ public class StudentController {
             String code = request.getParameter("code");
             String email = request.getParameter("email");
             if (studentService.activate(email, code) != 0) {
-                response.sendRedirect("/#/home?message=Activate successfully!&type=success");
+                response.sendRedirect("/#/home/login?message=Activate successfully!&type=success");
             } else {
-                response.sendRedirect("/#/home?message=Failed to activate!&type=error");
+                response.sendRedirect("/#/home/login?message=Failed to activate!&type=error");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,5 +78,24 @@ public class StudentController {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         return studentService.modifyAccount(email, name, password);
+    }
+
+    @RequestMapping(value = "/student/exchange", method = RequestMethod.GET)
+    public int exchange(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        int exchange = Integer.parseInt(request.getParameter("exchange"));
+        return studentService.exchangeCredits(email, exchange);
+    }
+
+    @RequestMapping(value = "/student/showCourses", method = RequestMethod.GET)
+    public List<Course> showCourses(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        return studentService.showCourses(email);
+    }
+
+    @RequestMapping(value = "/student/showOrders", method = RequestMethod.GET)
+    public List<Order> showOrders(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        return studentService.showOrders(email);
     }
 }

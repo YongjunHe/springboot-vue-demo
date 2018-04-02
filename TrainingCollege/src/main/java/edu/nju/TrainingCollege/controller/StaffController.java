@@ -1,6 +1,6 @@
 package edu.nju.TrainingCollege.controller;
 
-import edu.nju.TrainingCollege.domain.Staff;
+import edu.nju.TrainingCollege.domain.*;
 import edu.nju.TrainingCollege.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class StaffController {
@@ -62,5 +63,30 @@ public class StaffController {
         String title = request.getParameter("title");
         int collegeId = Integer.parseInt(request.getParameter("collegeId"));
         return staffService.modifyAccount(email, name, password, title, collegeId);
+    }
+
+    @RequestMapping(value = "/staff/showAllStaffs", method = RequestMethod.GET)
+    public List<Staff> showAllStaffs(HttpServletRequest request) {
+        return staffService.showAllStaffs();
+    }
+
+    @RequestMapping(value = "/staff/showAllStudents", method = RequestMethod.GET)
+    public List<Student> showAllStudents(HttpServletRequest request) {
+        return staffService.showAllStudents();
+    }
+
+    @RequestMapping(value = "/staff/showAllCourses", method = RequestMethod.GET)
+    public List<Course> showAllCourses(HttpServletRequest request) {
+        return staffService.showAllCourses();
+    }
+
+    @RequestMapping(value = "/staff/showAllColleges", method = RequestMethod.GET)
+    public List<College> showAllColleges(HttpServletRequest request) {
+        return staffService.showAllColleges();
+    }
+
+    @RequestMapping(value = "/staff/showAllOrders", method = RequestMethod.GET)
+    public List<Order> showAllOrders(HttpServletRequest request) {
+        return staffService.showAllOrders();
     }
 }

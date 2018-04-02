@@ -41,11 +41,6 @@ public class GeneralController {
         return 1;
     }
 
-    @RequestMapping(value = "/showCourses", method = RequestMethod.GET)
-    public List<Course> ShowCourses(HttpServletRequest request) {
-        return collegeService.showCourses(1000000);
-    }
-
     @RequestMapping(value = "/setupCourse", method = RequestMethod.GET)
     public int setupCourse(HttpServletRequest request) {
         List<Schedule> scheduleList = new ArrayList<Schedule>();

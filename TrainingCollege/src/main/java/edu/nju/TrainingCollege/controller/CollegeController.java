@@ -1,6 +1,6 @@
 package edu.nju.TrainingCollege.controller;
 
-import edu.nju.TrainingCollege.domain.College;
+import edu.nju.TrainingCollege.domain.*;
 import edu.nju.TrainingCollege.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class CollegeController {
@@ -57,5 +58,29 @@ public class CollegeController {
         String password = request.getParameter("password");
         int collegeId = Integer.parseInt(request.getParameter("collegeId"));
         return collegeService.modifyAccount(collegeId, password, location);
+    }
+
+    @RequestMapping(value = "/college/showStaffs", method = RequestMethod.GET)
+    public List<Staff> showStaffs(HttpServletRequest request) {
+        int collegeId = Integer.parseInt(request.getParameter("collegeId"));
+        return collegeService.showStaffs(collegeId);
+    }
+
+    @RequestMapping(value = "/college/showStudents", method = RequestMethod.GET)
+    public List<Student> showStudents(HttpServletRequest request) {
+        int collegeId = Integer.parseInt(request.getParameter("collegeId"));
+        return collegeService.showStudents(collegeId);
+    }
+
+    @RequestMapping(value = "/college/showCourses", method = RequestMethod.GET)
+    public List<Course> showCourses(HttpServletRequest request) {
+        int collegeId = Integer.parseInt(request.getParameter("collegeId"));
+        return collegeService.showCourses(collegeId);
+    }
+
+    @RequestMapping(value = "/college/showOrders", method = RequestMethod.GET)
+    public List<Order> showOrders(HttpServletRequest request) {
+        int collegeId = Integer.parseInt(request.getParameter("collegeId"));
+        return collegeService.showOrders(collegeId);
     }
 }
