@@ -80,6 +80,13 @@ public class StudentController {
         return studentService.modifyAccount(email, name, password);
     }
 
+    @RequestMapping(value = "/student/modifyMembership", method = RequestMethod.GET)
+    public int modifyMembership(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        int level = Integer.parseInt(request.getParameter("level"));
+        return studentService.modifyMembership(email, level);
+    }
+
     @RequestMapping(value = "/student/exchange", method = RequestMethod.GET)
     public int exchange(HttpServletRequest request) {
         String email = request.getParameter("email");

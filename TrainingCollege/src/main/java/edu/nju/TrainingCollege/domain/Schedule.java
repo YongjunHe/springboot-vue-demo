@@ -7,6 +7,10 @@ public class Schedule {
     private Timestamp starttime;
     private Timestamp endtime;
 
+    public Schedule() {
+
+    }
+
     public Schedule(Timestamp starttime, Timestamp endtime) {
         this.starttime = starttime;
         this.endtime = endtime;

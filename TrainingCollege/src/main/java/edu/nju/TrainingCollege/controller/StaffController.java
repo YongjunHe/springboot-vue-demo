@@ -65,6 +65,24 @@ public class StaffController {
         return staffService.modifyAccount(email, name, password, title, collegeId);
     }
 
+    @RequestMapping(value = "/staff/approveCollege", method = RequestMethod.GET)
+    public int approveCollege(HttpServletRequest request) {
+        int collegeId = Integer.parseInt(request.getParameter("collegeId"));
+        return staffService.approveCollege(collegeId, true);
+    }
+
+    @RequestMapping(value = "/staff/settleAccount", method = RequestMethod.GET)
+    public int settleAccount(HttpServletRequest request) {
+        int collegeId = Integer.parseInt(request.getParameter("collegeId"));
+        return staffService.settleAccount(collegeId);
+    }
+
+    @RequestMapping(value = "/staff/showScores", method = RequestMethod.GET)
+    public List<Classes> showScores(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        return staffService.showScores(email);
+    }
+
     @RequestMapping(value = "/staff/showAllStaffs", method = RequestMethod.GET)
     public List<Staff> showAllStaffs(HttpServletRequest request) {
         return staffService.showAllStaffs();
@@ -75,14 +93,14 @@ public class StaffController {
         return staffService.showAllStudents();
     }
 
-    @RequestMapping(value = "/staff/showAllCourses", method = RequestMethod.GET)
-    public List<Course> showAllCourses(HttpServletRequest request) {
-        return staffService.showAllCourses();
-    }
-
     @RequestMapping(value = "/staff/showAllColleges", method = RequestMethod.GET)
     public List<College> showAllColleges(HttpServletRequest request) {
         return staffService.showAllColleges();
+    }
+
+    @RequestMapping(value = "/staff/showAllCourses", method = RequestMethod.GET)
+    public List<Course> showAllCourses(HttpServletRequest request) {
+        return staffService.showAllCourses();
     }
 
     @RequestMapping(value = "/staff/showAllOrders", method = RequestMethod.GET)

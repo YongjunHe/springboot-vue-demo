@@ -8,6 +8,10 @@ public class Student {
     private int deposit;
     private int point;
 
+    public Student() {
+
+    }
+
     public Student(String email, String name, String password, int level, int deposit, int point) {
         this.email = email;
         this.name = name;

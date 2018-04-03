@@ -10,7 +10,10 @@ import java.util.List;
 @Component(value = "ClassesMapper")
 public interface ClassesMapper {
     @Select("select * from classes where semail = #{semail}")
-    List<Classes> selectByEmail(@Param("semail") String semail);
+    List<Classes> selectBySemail(@Param("semail") String semail);
+
+    @Select("select c1.* from classes c1 join course c2 on c1.courseid = c2.id where c2.temail = #{temail}")
+    List<Classes> selectByTemail(@Param("temail") String temail);
 
     @Select("select count(*) from classes where courseid = #{courseid}")
     int countByCourseid(@Param("courseid") int courseid);

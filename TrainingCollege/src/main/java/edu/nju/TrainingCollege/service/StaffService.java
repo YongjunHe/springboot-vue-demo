@@ -16,9 +16,11 @@ public interface StaffService {
 
     public int approveCollege(int college, boolean decision);
 
-    public int releaseScores(int courseid, List<Classes> transcript);
+    public int releaseScores(List<Classes> transcript);
 
     public Staff showProfile(String email);
+
+    public List<Classes> showScores(String email);
 
     public List<Staff> showAllStaffs();
 

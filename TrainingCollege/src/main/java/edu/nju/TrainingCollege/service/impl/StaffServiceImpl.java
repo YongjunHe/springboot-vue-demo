@@ -71,11 +71,11 @@ public class StaffServiceImpl implements StaffService {
             }
             collegeMapper.updateFinanceById(college, totalamount);
             platformTransactionManager.commit(transactionStatus);
+            return totalamount;
         } catch (Exception ex) {
             platformTransactionManager.rollback(transactionStatus);
             return 0;
         }
-        return 1;
     }
 
     @Override
@@ -86,22 +86,27 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public int releaseScores(int courseid, List<Classes> transcript) {
+    public int releaseScores(List<Classes> transcript) {
         TransactionStatus transactionStatus = platformTransactionManager.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED));
         try {
             for (Classes classes : transcript)
                 classesMapper.updateScore(classes.getScore(), classes.getCourseid(), classes.getSemail());
             platformTransactionManager.commit(transactionStatus);
+            return 1;
         } catch (Exception ex) {
             platformTransactionManager.rollback(transactionStatus);
             return 0;
         }
-        return 1;
     }
 
     @Override
     public Staff showProfile(String email) {
         return staffMapper.selectByEmail(email);
+    }
+
+    @Override
+    public List<Classes> showScores(String email) {
+        return classesMapper.selectByTemail(email);
     }
 
     @Override

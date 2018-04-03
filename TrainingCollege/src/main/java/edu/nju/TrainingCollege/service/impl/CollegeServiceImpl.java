@@ -72,11 +72,11 @@ public class CollegeServiceImpl implements CollegeService {
                 scheduleMapper.insertSchedule(schedule);
             }
             platformTransactionManager.commit(transactionStatus);
+            return course.getId();
         } catch (Exception ex) {
             platformTransactionManager.rollback(transactionStatus);
             return 0;
         }
-        return course.getId();
     }
 
     @Override
@@ -84,14 +84,15 @@ public class CollegeServiceImpl implements CollegeService {
         TransactionStatus transactionStatus = platformTransactionManager.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED));
         try {
             courseMapper.updateCourse(courseid, id, type, teacherEmail, size, period, price);
+            scheduleMapper.deleteScheduleById(courseid);
             for (Schedule schedule : schduleList)
-                scheduleMapper.updateSchedule(schedule);
+                scheduleMapper.insertSchedule(schedule);
             platformTransactionManager.commit(transactionStatus);
+            return 1;
         } catch (Exception ex) {
             platformTransactionManager.rollback(transactionStatus);
             return 0;
         }
-        return 1;
     }
 
     @Override

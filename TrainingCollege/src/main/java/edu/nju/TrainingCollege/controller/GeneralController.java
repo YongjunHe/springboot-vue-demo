@@ -41,22 +41,6 @@ public class GeneralController {
         return 1;
     }
 
-    @RequestMapping(value = "/setupCourse", method = RequestMethod.GET)
-    public int setupCourse(HttpServletRequest request) {
-        List<Schedule> scheduleList = new ArrayList<Schedule>();
-        Schedule schedule = new Schedule(10000, new Timestamp(2018, 3, 28, 22, 48, 0, 0), new Timestamp(2018, 3, 28, 22, 48, 0, 0));
-        scheduleList.add(schedule);
-        return collegeService.setupCourse(1000000, "english", "141260001@qq.com", 50, 8, 1000, scheduleList);
-    }
-
-    @RequestMapping(value = "/modifyCourse", method = RequestMethod.GET)
-    public int modifyCourse(HttpServletRequest request) {
-        List<Schedule> scheduleList = new ArrayList<Schedule>();
-        Schedule schedule = new Schedule(10014, new Timestamp(2018 - 1900, 3, 28, 22, 48, 0, 0), new Timestamp(2018 - 1900, 3, 28, 22, 48, 0, 0));
-        scheduleList.add(schedule);
-        return collegeService.modifyCourse(10014, 1000000, "english", "141260001@qq.com", 50, 8, 1000, scheduleList);
-    }
-
     @RequestMapping(value = "/pay", method = RequestMethod.GET)
     public int pay(HttpServletRequest request) {
         return studentService.pay("141250001@qq.com", "123456", 100000);

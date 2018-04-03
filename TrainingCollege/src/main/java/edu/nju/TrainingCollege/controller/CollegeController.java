@@ -3,13 +3,12 @@ package edu.nju.TrainingCollege.controller;
 import edu.nju.TrainingCollege.domain.*;
 import edu.nju.TrainingCollege.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -82,5 +81,19 @@ public class CollegeController {
     public List<Order> showOrders(HttpServletRequest request) {
         int collegeId = Integer.parseInt(request.getParameter("collegeId"));
         return collegeService.showOrders(collegeId);
+    }
+
+    @RequestMapping(value = "/college/setupCourse", method = RequestMethod.POST)
+    @ResponseBody
+    public int setupCourse(@RequestBody Course course) {
+        return collegeService.setupCourse(course.getCollege(), course.getType(), course.getTemail(), course.getSize(), course.getPeriod(), course.getPrice(), course.getScheduleList());
+    }
+
+    @RequestMapping(value = "/college/modifyCourse", method = RequestMethod.POST)
+    @ResponseBody
+    public int modifyCourse(@RequestBody Course course) {
+        System.out.println(course.getId());
+        System.out.println(course.getCollege());
+        return collegeService.modifyCourse(course.getId(), course.getCollege(), course.getType(), course.getTemail(), course.getSize(), course.getPeriod(), course.getPrice(), course.getScheduleList());
     }
 }

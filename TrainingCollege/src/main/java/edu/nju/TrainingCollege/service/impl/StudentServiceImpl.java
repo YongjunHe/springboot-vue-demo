@@ -210,6 +210,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Classes> showScores(String email) {
-        return classesMapper.selectByEmail(email);
+        return classesMapper.selectBySemail(email);
     }
 }

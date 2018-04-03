@@ -15,6 +15,6 @@ public interface ScheduleMapper {
     @Insert("insert into schedule (courseid, starttime, endtime) values(#{courseid}, #{starttime}, #{endtime})")
     int insertSchedule(Schedule schedule);
 
-    @Update("update schedule set starttime = #{starttime}, endtime = #{endtime} where courseid = #{courseid}")
-    int updateSchedule(Schedule schedule);
+    @Delete("delete from schedule where courseid = #{courseid}")
+    int deleteScheduleById(@Param("courseid") int courseid);
 }
