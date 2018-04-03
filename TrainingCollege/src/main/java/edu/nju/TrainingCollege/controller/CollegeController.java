@@ -92,8 +92,6 @@ public class CollegeController {
     @RequestMapping(value = "/college/modifyCourse", method = RequestMethod.POST)
     @ResponseBody
     public int modifyCourse(@RequestBody Course course) {
-        System.out.println(course.getId());
-        System.out.println(course.getCollege());
         return collegeService.modifyCourse(course.getId(), course.getCollege(), course.getType(), course.getTemail(), course.getSize(), course.getPeriod(), course.getPrice(), course.getScheduleList());
     }
 }

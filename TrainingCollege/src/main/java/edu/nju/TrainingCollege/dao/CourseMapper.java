@@ -58,8 +58,24 @@ public interface CourseMapper {
     })
     List<Course> selectByCollege(@Param("college") int college);
 
-    @Select("select course.*, count(*) as tempsize from course join classes on id = courseid where college = #{college} and type = #{type} group by courseid")
-    List<Map> selectSuitableCourse(@Param("college") int college, @Param("type") String type);
+    @Select("select * from course where college = #{college} and type = #{type}")
+    @Results({
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "college", column = "college"),
+            @Result(property = "type", column = "type"),
+            @Result(property = "temail", column = "temail"),
+            @Result(property = "size", column = "size"),
+            @Result(property = "period", column = "period"),
+            @Result(property = "prize", column = "prize"),
+            @Result(property = "scheduleList", column = "id", javaType = List.class,
+                    many = @Many(select = "edu.nju.TrainingCollege.dao.ScheduleMapper.selectByCourse")),
+            @Result(property = "studentList", column = "id", javaType = List.class,
+                    many = @Many(select = "edu.nju.TrainingCollege.dao.StudentMapper.selectByCourse"))
+    })
+    List<Course> selectByCollegeAndType(@Param("college") int college, @Param("type") String type);
+
+    @Select("select count(*) from course join classes on id = courseid where courseid = #{courseid}")
+    int selectSizeById(@Param("courseid") int courseid);
 
     @Select("select * from course")
     @Results({

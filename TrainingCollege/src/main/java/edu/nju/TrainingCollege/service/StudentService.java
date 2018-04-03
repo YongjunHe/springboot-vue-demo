@@ -20,17 +20,17 @@ public interface StudentService {
 
     public int exchangeCredits(String email, int credit);
 
-    public int save(String email, String password, int amount);
+    public int save(String email, int amount);
 
-    public int spend(String email, String password, int amount);
+    public int spend(String email, int amount);
 
-    public int subscribe(String email, int courseid, int amount, List<String> semailList);
+    public int subscribe(String email, int courseid, int amount, List<Student> studentList);
 
-    public int subscribe(String email, int collegeid, String type, int amount, List<String> semailList);
+    public int subscribe(String email, int collegeid, String type, int amount, List<Student> studentList);
 
-    public int unsubscribe(String email, String password, int orderid);
+    public int unsubscribe(String email, int orderid);
 
-    public int pay(String email, String password, int orderid);
+    public int pay(String email, int orderid);
 
     public Student showProfile(String email);
 

@@ -6,6 +6,10 @@ public class Classes {
     private String semail;
     private int score;
 
+    public Classes() {
+
+    }
+
     public Classes(int orderid, int courseid, String semail, int score) {
         this.orderid = orderid;
         this.courseid = courseid;

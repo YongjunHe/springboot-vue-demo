@@ -3,10 +3,7 @@ package edu.nju.TrainingCollege.controller;
 import edu.nju.TrainingCollege.domain.*;
 import edu.nju.TrainingCollege.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -81,6 +78,12 @@ public class StaffController {
     public List<Classes> showScores(HttpServletRequest request) {
         String email = request.getParameter("email");
         return staffService.showScores(email);
+    }
+
+    @RequestMapping(value = "/staff/releaseScores", method = RequestMethod.POST)
+    @ResponseBody
+    public int releaseScores(@RequestBody List<Classes> transcript) {
+        return staffService.releaseScores(transcript);
     }
 
     @RequestMapping(value = "/staff/showAllStaffs", method = RequestMethod.GET)

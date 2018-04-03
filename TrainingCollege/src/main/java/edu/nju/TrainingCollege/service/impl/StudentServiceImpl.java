@@ -98,85 +98,88 @@ public class StudentServiceImpl implements StudentService {
         return 0;
     }
 
-    public int save(String email, String password, int amount) {
+    public int save(String email, int amount) {
         Student student = studentMapper.selectByEmail(email);
         if (student != null)
-            if (student.getPassword().equals(password))
-                return studentMapper.updateDepositByEmail(student.getDeposit() + amount, email);
+            return studentMapper.updateDepositByEmail(student.getDeposit() + amount, email);
         return 0;
     }
 
-    public int spend(String email, String password, int amount) {
+    public int spend(String email, int amount) {
         Student student = studentMapper.selectByEmail(email);
         if (student != null)
-            if (student.getDeposit() > amount && student.getPassword().equals(password))
-                return studentMapper.updateDepositByEmail(student.getDeposit() - amount, email);
+            return studentMapper.updateDepositByEmail(student.getDeposit() - amount, email);
         return 0;
     }
 
     @Override
     @Transactional
-    public int subscribe(String email, int courseid, int amount, List<String> semailList) {
+    public int subscribe(String email, int courseid, int amount, List<Student> studentList) {
         Course course = courseMapper.selectById(courseid);
         Order order = new Order(email, course.getCollege(), course.getType(), amount, 0);
         orderMapper.insertOrder(order);
-        for (String semail : semailList) {
-            classesMapper.insertClass(order.getId(), courseid, semail);
+        for (Student student : studentList) {
+            classesMapper.insertClass(order.getId(), courseid, student.getEmail());
         }
-        if ((course.getSize() - classesMapper.countByCourseid(courseid)) < semailList.size())
+        if ((course.getSize() - classesMapper.countByCourseid(courseid)) < studentList.size())
             throw new CustomException("No position now !");
-        return 1;
+        return order.getId();
     }
 
     @Override
     @Transactional
-    public int subscribe(String email, int collegeid, String type, int amount, List<String> semailList) {
-        List<Map> courseList = courseMapper.selectSuitableCourse(collegeid, type);
+    public int subscribe(String email, int collegeid, String type, int amount, List<Student> studentList) {
+        List<Course> courseList = courseMapper.selectByCollegeAndType(collegeid, type);
         int total = 0;
         int available = 0;
-        for (Map map : courseList) {
-            available = ((int) map.get("size") - Integer.parseInt(map.get("tempsize").toString()));
+        for (Course course : courseList) {
+            available = course.getSize() - courseMapper.selectSizeById(course.getId());
             if (available != 0) {
                 total += available;
             } else {
-                courseList.remove(map);
+                courseList.remove(course);
             }
         }
-        if (total < semailList.size())
+
+        if (total < studentList.size())
             return 0;
 
         Order order = new Order(email, collegeid, type, amount, 0);
         orderMapper.insertOrder(order);
-        for (String semail : semailList) {
-            for (Map map : courseList) {
-                if ((int) map.get("size") > Integer.parseInt(map.get("tempsize").toString())) {
-                    map.put("tempsize", (Long) map.get("tempsize") + 1);
-                    classesMapper.insertClass(order.getId(), (int) map.get("id"), semail);
+        for (Student student : studentList) {
+            for (Course course : courseList) {
+                if (course.getSize() > courseMapper.selectSizeById(course.getId())) {
+                    classesMapper.insertClass(order.getId(), course.getId(), student.getEmail());
                     break;
                 } else {
-                    courseList.remove(map);
+                    courseList.remove(course);
                 }
             }
         }
 
-        courseList = courseMapper.selectSuitableCourse(collegeid, type);
-        for (Map map : courseList) {
-            if ((int) map.get("size") < Integer.parseInt(map.get("tempsize").toString()))
+        courseList = courseMapper.selectByCollegeAndType(collegeid, type);
+        for (Course course : courseList) {
+            if (course.getSize() < courseMapper.selectSizeById(course.getId()))
                 throw new CustomException("No position now !");
         }
-        return 1;
+        return order.getId();
     }
 
     @Override
     @Transactional
-    public int unsubscribe(String email, String password, int orderid) {
+    public int unsubscribe(String email, int orderid) {
         Order order = orderMapper.selectById(orderid);
         if (order != null) {
             College college = collegeMapper.selectById(order.getCollege());
             if (college != null) {
-                if (classesMapper.deleteByOrder(orderid) * orderMapper.deleteOrderById(orderid) * save(email, password, order.getAmount()) == 0)
-                    throw new CustomException("Failed to unsubscribe");
-                if (collegeMapper.updateFinanceById(college.getId(), college.getFinance() - order.getAmount()) == 0)
+                classesMapper.deleteByOrder(orderid);
+                if (order.getStatus() != 0)
+                    if (save(email, order.getAmount()) == 0)
+                        throw new CustomException("Failed to unsubscribe");
+                if (order.getStatus() == 2)
+                    if (collegeMapper.updateFinanceById(college.getId(), college.getFinance() - order.getAmount()) == 0)
+                        throw new CustomException("Failed to unsubscribe");
+                if (orderMapper.deleteOrderById(orderid) == 0)
                     throw new CustomException("Failed to unsubscribe");
             }
         }
@@ -185,10 +188,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional
-    public int pay(String email, String password, int orderid) {
+    public int pay(String email, int orderid) {
         Order order = orderMapper.selectById(orderid);
         if (order != null)
-            if (orderMapper.updatePaytimeById(orderid) * orderMapper.updateStatusById(1, orderid) * spend(email, password, order.getAmount()) == 0)
+            if (orderMapper.updatePaytimeById(orderid) * orderMapper.updateStatusById(1, orderid) * spend(email, order.getAmount()) == 0)
                 throw new CustomException("Failed to pay");
         orderMapper.deleteOrderByTime();
         return 1;
