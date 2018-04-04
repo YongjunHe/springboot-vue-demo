@@ -119,7 +119,7 @@
                     message: 'Register successfully! Please refer to the activation link in your email-box',
                     type: 'success',
                   });
-                  local_this.$router.push({path: '/home/login'});
+                  local_this.$router.push({path: '/account/login'});
                 } else {
                   local_this.$message({
                     message: 'Please try again',
@@ -146,7 +146,7 @@
                     message: 'Register Successfully!',
                     type: 'success',
                   });
-                  local_this.$router.push({path: '/home/login'});
+                  local_this.$router.push({path: '/account/login'});
                 } else {
                   local_this.$message({
                     message: 'Please try again!',
@@ -170,7 +170,7 @@
                     message: 'Register Successfully! Your collegeId is ' + response.data,
                     type: 'success',
                   });
-                  local_this.$router.push({path: '/home/login'});
+                  local_this.$router.push({path: '/account/login'});
                 } else {
                   local_this.$message({
                     message: 'Please try again!',

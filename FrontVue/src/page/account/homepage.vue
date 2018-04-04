@@ -43,8 +43,16 @@
           <el-form-item label="余额" prop="deposit">
             <el-input size="medium" :disabled=true v-model="form.deposit"></el-input>
           </el-form-item>
-          <el-form-item label="积分" prop="point">
-            <el-input size="medium" :disabled=true v-model="form.point"></el-input>
+          <el-form-item label="积分">
+            <el-col :span="10">
+              <el-input size="medium" :disabled=true v-model="form.point"></el-input>
+            </el-col>
+            <el-col :span="10">
+              <el-input size="medium" v-model="form.exchange"></el-input>
+            </el-col>
+            <el-col :span="2">
+              <el-button @click="exchange()">兑换</el-button>
+            </el-col>
           </el-form-item>
         </template>
         <el-form-item label="密码" prop="password">
@@ -91,6 +99,7 @@
           level: '',
           deposit: '',
           point: '',
+          exchange: '',
           title: '',
           password: '',
           checkPassword: '',
@@ -118,9 +127,6 @@
           level: [
             {required: true, message: '请输入级别', trigger: 'blur'}
           ],
-          point: [
-            {required: true, message: '请输入积分', trigger: 'blur'}
-          ],
           deposit: [
             {required: true, message: '请输入金额', trigger: 'blur'}
           ],
@@ -140,15 +146,23 @@
         }
       };
     },
-    beforeMount: function () {
+    mounted: function () {
       if (!window.sessionStorage.getItem('userType')) {
-        this.$router.push({path: '/home/login'});
+        this.$router.push({path: '/account/login'});
       } else {
         this.$axios.get('/' + window.sessionStorage.getItem('userType') + '/profile', {
           params: {
             userId: window.sessionStorage.getItem('userId'),
           }
         }).then((response) => {
+          console.log(response);
+          if (!response.data) {
+            this.$message({
+              message: 'Failed to load the data!',
+              type: 'warning',
+            });
+            return false;
+          }
           if (window.sessionStorage.getItem('userType') === 'college') {
             this.form.collegeId = response.data.id;
             this.form.location = response.data.location;
@@ -177,7 +191,7 @@
           }
         }).catch((error) => {
           console.log(error);
-          this.$router.push({path: '/home/login'});
+          this.$router.push({path: '/account/login'});
         });
       }
     },
@@ -185,7 +199,7 @@
       submit(formName) {
         this.$refs[formName].validate((valid) => {
           if (!this.form.type) {
-            this.$router.push({path: '/home/login'});
+            this.$router.push({path: '/account/login'});
           } else {
             this.$axios.get('/' + this.form.type + '/modifyAccount', {
               params: {
@@ -216,6 +230,34 @@
           }
         });
       },
+      exchange() {
+        this.$axios.get('/student/exchange', {
+          params: {
+            email: this.form.email,
+            exchange: this.form.exchange
+          }
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.data !== 0) {
+              this.$message({
+                message: 'Exchange successfully!',
+                type: 'success',
+              });
+              this.form.deposit = (parseInt(this.form.deposit) + parseInt(this.form.exchange)).toString();
+              this.form.point = (parseInt(this.form.point) - parseInt(this.form.exchange)).toString();
+            } else {
+              this.$message({
+                message: 'Please try again',
+                type: 'warning',
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.$message.error(error);
+          });
+      },
       logout() {
         this.$axios.get('/' + this.form.type + '/logout')
           .then(function (response) {
@@ -226,7 +268,7 @@
           .catch(function (error) {
             console.log(error);
           });
-        this.$router.push({path: '/home/login'});
+        this.$router.push({path: '/account/login'});
       }
     }
   }

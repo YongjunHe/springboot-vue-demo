@@ -60,6 +60,13 @@
         }
       }
     },
+    mounted: function () {
+      if (this.$route.query.type !== undefined)
+        this.$message({
+          message: this.$route.query.message,
+          type: this.$route.query.type,
+        });
+    },
     methods: {
       submit(formName) {
         this.$refs[formName].validate((valid) => {
@@ -81,7 +88,7 @@
                 } else {
                   window.sessionStorage.setItem('userId', local_this.form.email);
                   window.sessionStorage.setItem('userType', local_this.form.type);
-                  local_this.$router.push({path: '/home/homepage'});
+                  local_this.$router.push({path: '/account/homepage'});
                 }
               }).catch(function (error) {
                 console.log(error);
@@ -103,7 +110,7 @@
                 } else {
                   window.sessionStorage.setItem('userId', local_this.form.collegeId);
                   window.sessionStorage.setItem('userType', local_this.form.type);
-                  local_this.$router.push({path: '/home/homepage'});
+                  local_this.$router.push({path: '/account/homepage'});
                 }
               }).catch(function (error) {
                 console.log(error);

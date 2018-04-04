@@ -5,6 +5,12 @@ import home from '../page/home/home'
 import login from '../page/account/login'
 import register from '../page/account/register'
 import homepage from '../page/account/homepage'
+import staffs from '../page/person/staffs'
+import students from '../page/person/students'
+import courses from '../page/courses/courses'
+import scores from '../page/courses/scores'
+import colleges from '../page/colleges/colleges'
+import orders from '../page/orders/orders'
 
 Vue.use(Router);
 
@@ -24,16 +30,40 @@ export default new Router({
           component: HelloWorld
         },
         {
-          path: '/home/login',
+          path: '/account/login',
           component: login
         },
         {
-          path: '/home/register',
+          path: '/account/register',
           component: register
         },
         {
-          path: '/home/homepage',
+          path: '/account/homepage',
           component: homepage
+        },
+        {
+          path: '/person/staffs',
+          component: staffs
+        },
+        {
+          path: '/person/students',
+          component: students
+        },
+        {
+          path: '/courses/courses',
+          component: courses
+        },
+        {
+          path: '/courses/scores',
+          component: scores
+        },
+        {
+          path: '/colleges/colleges',
+          component: colleges
+        },
+        {
+          path: '/orders/orders',
+          component: orders
         }
       ]
     }
